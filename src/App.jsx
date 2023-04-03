@@ -9,10 +9,10 @@ import NuevoUsuario from './NuevoUsuario';
 
 function App() {
 
-  const URL = 'http://localhost:3000/api/usuarios';
+  const URL = 'http://localhost:3000/api/usuarios/';
 
   const [index, setIndex] = useState(-1);
-  const [id, setId] = useState("");
+  const [id, setId] = useState();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [lista, setLista] = useState([]);
@@ -31,17 +31,21 @@ function App() {
 
 
   function borraItem(x) {
+    console.log("borrarItem",x,lista)
+    const valorId = lista[x].id
+    console.log(valorId)
+   
     const nuevaLista = [...lista]
-    setId(lista[x].id)
-    console.log("delete",id)
-    deleteUsu(id);
+   
+  
+    console.log("borrarItem",valorId)
+    deleteUsu(valorId);
     nuevaLista.splice(x, 1)
     setLista(nuevaLista)
   }
 
   function editaItem(x) {
     setIndex(x)
-    console.log("index edita",index)
     setId(lista[x].id)
     setName(lista[x].name)
     setEmail(lista[x].email)
@@ -50,11 +54,9 @@ function App() {
   function guardaItem() {
     const nuevaLista = [...lista]
     if (index > -1) {
-      console.log("entra a guardarITEM", index, name, email)
       //estamos editando
       nuevaLista[index].name = name
       nuevaLista[index].email = email
-      console.log("id", id, name, email)
       editar(id);
     } else {
       //registro nuevo
@@ -72,13 +74,13 @@ function App() {
   }
 
   function deleteUsu(id){
-    console.log("index delete",id, (URL + "/" + id))
-    fetch((URL + "/" + id), {
+    console.log(" deleteUsu",id, (URL + id))
+    fetch((URL + id), {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({id,name, email})
+      body: JSON.stringify({name: name, email: email})
     })
       .then(response => response.json())
       .then(data => console.log(data))
@@ -97,8 +99,9 @@ function App() {
       .then(data => console.log(data))
       .catch(error => console.error(error));
   }
+
   function editar(id) {
-    fetch((URL+"/"+ id ), {
+    fetch((URL + id ), {
       method: 'PUT',
       body: JSON.stringify({name, email}),
       headers: {

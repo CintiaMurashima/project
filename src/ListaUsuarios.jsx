@@ -11,7 +11,7 @@ function ListaUsuarios(props) {
 
     function edita(index){
         props.editaItem(index);
-        navigate('/usuarios/nuevo');
+        navigate('/usuarios/nuevo/');
     }
 
     const listaFilas = props.lista.map((el, index) => (
@@ -20,7 +20,7 @@ function ListaUsuarios(props) {
             <td>{el.name}</td>
             <td>{el.email}</td>
             <td>
-                <Button size="sm" variant="primary" onClick={() => edita(index)} >
+                <Button size="sm" variant="primary" onClick={() => edita(el.id)} >
                     <FontAwesomeIcon icon={faEdit} />
                 </Button>
                 <Button size="sm" variant="danger" onClick={() => props.borraItem(index)} >
